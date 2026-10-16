@@ -1,0 +1,8 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up():void {
+ Schema::create('coupons',function(Blueprint $t){$t->id();$t->string('code')->unique();$t->enum('type',['percent','fixed']);$t->decimal('value',12,2);$t->decimal('minimum_spend',12,2)->nullable();$t->unsignedInteger('usage_limit')->nullable();$t->unsignedInteger('usage_count')->default(0);$t->timestamp('starts_at')->nullable();$t->timestamp('ends_at')->nullable()->index();$t->boolean('is_active')->default(true)->index();$t->timestamps();});
+ Schema::create('carts',function(Blueprint $t){$t->id();$t->foreignId('user_id')->nullable()->unique()->constrained()->cascadeOnDelete();$t->string('session_id')->nullable()->unique();$t->foreignId('coupon_id')->nullable()->constrained()->nullOnDelete();$t->timestamps();});
+ Schema::create('cart_items',function(Blueprint $t){$t->id();$t->foreignId('cart_id')->constrained()->cascadeOnDelete();$t->foreignId('product_id')->constrained()->cascadeOnDelete();$t->json('variant')->nullable();$t->unsignedInteger('quantity');$t->decimal('unit_price',12,2);$t->timestamps();$t->unique(['cart_id','product_id']);});
+ Schema::create('wishlists',function(Blueprint $t){$t->id();$t->foreignId('user_id')->constrained()->cascadeOnDelete();$t->foreignId('product_id')->constrained()->cascadeOnDelete();$t->timestamps();$t->unique(['user_id','product_id']);});
+ } public function down():void {Schema::dropIfExists('wishlists');Schema::dropIfExists('cart_items');Schema::dropIfExists('carts');Schema::dropIfExists('coupons');} };

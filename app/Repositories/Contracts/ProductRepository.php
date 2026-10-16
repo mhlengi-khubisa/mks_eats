@@ -1,0 +1,1 @@
+<?php namespace App\Repositories\Contracts; use Illuminate\Contracts\Pagination\LengthAwarePaginator; use App\Models\Product; interface ProductRepository { public function search(array $filters):LengthAwarePaginator; public function findPublic(string $slug):Product; }

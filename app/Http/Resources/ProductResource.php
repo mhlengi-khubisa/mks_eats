@@ -1,0 +1,3 @@
+<?php
+namespace App\Http\Resources; use Illuminate\Http\Request; use Illuminate\Http\Resources\Json\JsonResource;
+class ProductResource extends JsonResource { public function toArray(Request $request):array{return ['id'=>$this->id,'name'=>$this->name,'slug'=>$this->slug,'description'=>$this->description,'price'=>$this->price,'featured'=>$this->is_featured,'vendor'=>['name'=>$this->vendor?->store_name,'slug'=>$this->vendor?->slug,'location'=>$this->vendor?->location],'category'=>$this->category?->name,'image'=>$this->images->firstWhere('is_primary',true)?->path,'in_stock'=>($this->inventory?->available()??0)>0,'rating'=>round((float)$this->reviews()->where('is_approved',true)->avg('rating'),1)];} }

@@ -1,0 +1,1 @@
+<?php namespace App\Models; use Illuminate\Database\Eloquent\Model; class CartItem extends Model { protected $fillable=['cart_id','product_id','variant','quantity','unit_price']; protected function casts():array{return ['variant'=>'array','unit_price'=>'decimal:2'];} public function product(){return $this->belongsTo(Product::class);} }

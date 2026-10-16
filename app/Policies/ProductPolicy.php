@@ -1,0 +1,1 @@
+<?php namespace App\Policies; use App\Models\{Product,User}; class ProductPolicy { public function update(User $user,Product $product):bool{return $user->isAdmin()||$product->vendor->user_id===$user->id;} public function delete(User $user,Product $product):bool{return $this->update($user,$product);} }
